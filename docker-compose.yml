@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "4000:4000"
+    environment:
+      - NODE_ENV=production
+      - PORT=4000
+      - MONGO_URI=mongodb://mongodb:27017/bus-tracking
+    depends_on:
+      - mongodb
+    restart: unless-stopped
+    networks:
+      - bus-tracking-network
+
+  mongodb:
+    image: mongo:7.0
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_DATABASE=bus-tracking
+    volumes:
+      - mongodb_data:/data/db
+      - ./mongo-init:/docker-entrypoint-initdb.d
+    restart: unless-stopped
+    networks:
+      - bus-tracking-network
+
+volumes:
+  mongodb_data:
+
+networks:
+  bus-tracking-network:
+    driver: bridge
