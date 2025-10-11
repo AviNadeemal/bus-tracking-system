@@ -31,7 +31,7 @@ export const io = new IOServer(server, {
 app.use(express.json()); 
 app.use(helmet());
 app.use(cors({ origin: '*' })); 
-app.use(rateLimit({ windowMs: 60 * 1000, max: 200 })); 
+app.use(rateLimit({ windowMs: 60 * 1000, max: 400 })); 
 app.use(morgan('dev')); 
 
 // API Routes 
